@@ -1,109 +1,155 @@
-ReconheLIBRAS: Identificador de Datilologia em LIBRAS
-Descrição do Projeto
-O ReconheLIBRAS é uma aplicação Python que utiliza visão computacional e aprendizado de máquina para identificar a datilologia (alfabeto manual) em LIBRAS (Língua Brasileira de Sinais) em tempo real, através da webcam. O projeto permite coletar dados de imagens de mãos, processá-los, treinar um modelo de classificação e, finalmente, realizar o reconhecimento em tempo real.
 
-Funcionalidades
-Coleta de Dados: Capture imagens de sinais manuais de letras específicas para criar um dataset.
 
-Processamento de Dados: Extraia landmarks das mãos de imagens coletadas usando MediaPipe, normalizando-as para o treinamento do modelo.
+# 🧠🤟 ReconheLIBRAS: Identificador de Datilologia em LIBRAS
 
-Treinamento do Modelo: Treine um classificador RandomForest com os dados processados para aprender a identificar as letras.
+**ReconheLIBRAS** é uma aplicação em Python que utiliza **Visão Computacional** e **Aprendizado de Máquina** para identificar a datilologia (alfabeto manual) da **LIBRAS** (Língua Brasileira de Sinais) **em tempo real via webcam**.
 
-Reconhecimento em Tempo Real: Utilize o modelo treinado para reconhecer e exibir a letra identificada na webcam.
+---
 
-Instalação
-Clone o repositório:
+## 📌 Funcionalidades
 
+* 📸 **Coleta de Dados**: Capture imagens de sinais manuais para criação do dataset.
+* 🧼 **Processamento de Dados**: Extração e normalização de *landmarks* das mãos com MediaPipe.
+* 🧠 **Treinamento do Modelo**: Classificação com RandomForest baseada nas *features* extraídas.
+* 🎥 **Reconhecimento em Tempo Real**: Identificação das letras da LIBRAS diretamente pela webcam.
+
+---
+
+## ⚙️ Instalação
+
+### 1. Clone o repositório
+
+```bash
 git clone https://github.com/seu-usuario/recoLIBRAS.git
 cd recoLIBRAS
+```
 
-Crie e ative um ambiente virtual (recomendado):
+### 2. Crie e ative um ambiente virtual (recomendado)
 
+```bash
 python -m venv venv
+
 # No Windows
 .\venv\Scripts\activate
+
 # No macOS/Linux
 source venv/bin/activate
+```
 
-Instale as dependências:
+### 3. Instale as dependências
 
+```bash
 pip install opencv-python mediapipe numpy scikit-learn joblib
+```
 
-Uso
-O script principal (seu_script.py - altere para o nome do seu arquivo, por exemplo, main.py) opera em diferentes modos, controlados por argumentos de linha de comando.
+---
 
-1. Coleta de Dados
-Use este modo para coletar imagens de cada letra que você deseja que o modelo aprenda.
+## 🚀 Uso
 
+O script principal (`seu_script.py` ou `main.py`) possui **4 modos** de operação controlados via linha de comando:
+
+### 1️⃣ Coleta de Dados
+
+> Capture imagens da letra desejada
+
+```bash
 python seu_script.py collect --letter <LETRA> --num_images <NUM_IMAGENS>
+```
 
-<LETRA>: A letra em LIBRAS que você deseja coletar (ex: A, B, C).
+* `<LETRA>`: Letra que você deseja capturar (ex: A, B, C)
+* `<NUM_IMAGENS>`: Quantidade de imagens (padrão: 50)
 
-<NUM_IMAGENS>: O número de imagens que você deseja coletar para esta letra (padrão: 50).
+**Exemplo**:
 
-Exemplo:
-
+```bash
 python seu_script.py collect --letter A --num_images 100
-python seu_script.py collect --letter B --num_images 100
-# Repita para todas as letras desejadas
+```
 
-Observação: A aplicação irá abrir sua webcam. Posicione sua mão fazendo o sinal da letra e pressione 's' para salvar a imagem. Pressione 'q' para sair.
+> 📌 Pressione `s` para salvar cada imagem
+> 🛑 Pressione `q` para sair
 
-2. Processamento de Dados
-Após coletar as imagens, processe-as para extrair as landmarks das mãos.
+---
 
+### 2️⃣ Processamento de Dados
+
+> Extrai os landmarks e gera o arquivo com os dados processados.
+
+```bash
 python seu_script.py process
+```
 
-Este comando irá criar um arquivo libras_processed_data.pkl contendo as features e labels extraídas.
+✅ Gera o arquivo `libras_processed_data.pkl`
 
-3. Treinamento do Modelo
-Treine o classificador usando os dados processados.
+---
 
+### 3️⃣ Treinamento do Modelo
+
+> Treine o classificador RandomForest
+
+```bash
 python seu_script.py train
+```
 
-Este comando irá gerar dois arquivos: libras_rf_model.joblib (o modelo treinado) e libras_label_encoder.joblib (o codificador de labels). Ele também exibirá métricas de avaliação do modelo.
+✅ Gera os arquivos:
 
-4. Reconhecimento em Tempo Real
-Após o treinamento, você pode usar o modelo para identificar sinais em tempo real pela webcam.
+* `libras_rf_model.joblib` – modelo treinado
+* `libras_label_encoder.joblib` – codificador de labels
 
+📊 Métricas de avaliação são exibidas no terminal.
+
+---
+
+### 4️⃣ Reconhecimento em Tempo Real
+
+> Identifique sinais ao vivo com a webcam
+
+```bash
 python seu_script.py recognize
+```
 
-A webcam será ativada e a letra reconhecida será exibida na tela. Pressione 'q' para sair.
+📷 A webcam será ativada.
+🔤 A letra reconhecida será exibida na tela.
+🛑 Pressione `q` para sair
 
-Estrutura do Projeto
+---
+
+## 📁 Estrutura do Projeto
+
+```
 .
-├── libras_dataset/             # Pasta onde as imagens coletadas são armazenadas
+├── libras_dataset/             # Dataset de imagens
 │   ├── A/                      # Imagens da letra 'A'
-│   │   ├── A_0.jpg
-│   │   └── A_1.jpg
 │   ├── B/                      # Imagens da letra 'B'
-│   │   ├── B_0.jpg
-│   │   └── B_1.jpg
 │   └── ...
-├── seu_script.py               # (Ou main.py) O código-fonte principal
-├── libras_processed_data.pkl   # Arquivo gerado com features e labels processadas
-├── libras_rf_model.joblib      # Modelo de RandomForest treinado
-└── libras_label_encoder.joblib # Codificador de labels para as classes
+├── seu_script.py               # Código principal
+├── libras_processed_data.pkl   # Dados processados
+├── libras_rf_model.joblib      # Modelo treinado
+└── libras_label_encoder.joblib # Encoder de classes
+```
 
-Dependências
-As principais dependências são:
+---
 
-opencv-python: Para manipulação de imagens e acesso à webcam.
+## 📦 Dependências
 
-mediapipe: Para detecção de landmarks da mão.
+* [`opencv-python`](https://pypi.org/project/opencv-python): Acesso à webcam e manipulação de imagens
+* [`mediapipe`](https://google.github.io/mediapipe/): Extração de landmarks das mãos
+* [`numpy`](https://numpy.org/): Operações numéricas
+* [`scikit-learn`](https://scikit-learn.org/): Classificador RandomForest
+* [`joblib`](https://joblib.readthedocs.io/): Salvamento de modelos
 
-numpy: Para operações com arrays numéricos.
+---
 
-scikit-learn: Para o classificador RandomForest e ferramentas de ML.
+## ⚠️ Notas Importantes
 
-joblib: Para salvar e carregar modelos e encoders.
+* ❌ **Letras Ignoradas**: 'J', 'X' e 'Z' são ignoradas pois envolvem **movimento**, exigindo modelos baseados em sequência (vídeo).
+* 📸 **Qualidade dos Dados**: Imagens devem estar bem iluminadas e com gestos claros.
+* 🔄 **Divisão de Dados**: É usada **estratificação** para garantir equilíbrio entre classes. Para evitar problemas, colete dados suficientes para cada letra.
 
-Notas Importantes
-Letras Ignoradas: As letras 'J', 'X' e 'Z' são explicitamente ignoradas na coleta e processamento de dados (LETTERS_TO_IGNORE). Isso ocorre porque essas letras geralmente envolvem movimento, o que é mais complexo de capturar com um modelo estático de landmarks de uma única imagem. Para incluí-las, seria necessário implementar um reconhecimento baseado em sequências (vídeos).
+---
 
-Qualidade dos Dados: A acurácia do modelo depende muito da qualidade e quantidade das imagens coletadas. Certifique-se de que as imagens são claras, a mão está bem posicionada e o ambiente tem boa iluminação.
+## 📄 Licença
 
-Divisão de Dados: O script tenta usar estratificação durante a divisão de dados para treinamento e teste. Se o número de amostras por classe for muito baixo, a estratificação pode ser desativada, o que pode afetar a representatividade do conjunto de teste. Colete mais dados se isso ocorrer.
+Distribuído sob a **Licença MIT**. Consulte o arquivo [LICENSE](./LICENSE) para mais informações.
 
-Licença
-Este projeto está licenciado sob a licença MIT. Consulte o arquivo LICENSE para mais detalhes.
+---
+
